@@ -107,3 +107,33 @@ mark[data-annotation] { background: var(--highlight); color: inherit; }
   padding: 0.2rem 0.7rem; cursor: pointer; font-family: var(--sans);
 }
 .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* 註記 UI */
+::highlight(annotations) { background-color: var(--highlight); }
+#ann-fab {
+  position: absolute; z-index: 60;
+  border: 1px solid var(--accent); border-radius: 999px;
+  background: var(--bg); color: var(--accent);
+  padding: 0.25rem 0.8rem; font-size: 0.85rem; cursor: pointer; font-family: var(--sans);
+}
+#ann-panel {
+  position: fixed; z-index: 70; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+  width: min(92vw, 26rem); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 12px; padding: 1rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+#ann-panel blockquote {
+  margin: 0 0 0.6rem; padding: 0.2rem 0.8rem;
+  border-left: 3px solid var(--accent); color: var(--muted); font-size: 0.85rem;
+}
+#ann-panel textarea {
+  width: 100%; margin-top: 0.5rem; padding: 0.5rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg); color: var(--fg); font-family: var(--sans);
+}
+#ann-panel .ann-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.6rem; }
+#ann-panel button {
+  border: 1px solid var(--border); border-radius: 6px; background: none;
+  color: var(--fg); padding: 0.3rem 0.9rem; cursor: pointer; font-family: var(--sans);
+}
+#ann-panel #ann-save { border-color: var(--accent); color: var(--accent); }

@@ -67,6 +67,13 @@
 
   let pending = null; // { exact, prefix, suffix, section }
 
+  function offsetOf(node, nodeOffset, spans) {
+    for (const sp of spans) {
+      if (sp.node === node) return sp.start + nodeOffset;
+    }
+    return -1;
+  }
+
   function sectionOf(node) {
     let el = node.nodeType === 1 ? node : node.parentElement;
     while (el && el !== article) {
@@ -87,8 +94,14 @@
     if (!article.contains(range.commonAncestorContainer)) { fab.hidden = true; return; }
     const exact = sel.toString();
     if (!exact.trim()) { fab.hidden = true; return; }
-    const { text } = fullText(article);
-    const idx = text.indexOf(exact);
+    const { text, spans } = fullText(article);
+    let idx = range.startContainer.nodeType === Node.TEXT_NODE
+      ? offsetOf(range.startContainer, range.startOffset, spans)
+      : -1;
+    // 跨元素選取時 sel.toString() 與串接文字可能有細微差異；驗證失敗就退回舊行為
+    if (idx === -1 || text.slice(idx, idx + exact.length) !== exact) {
+      idx = text.indexOf(exact);
+    }
     pending = {
       exact,
       prefix: idx > 0 ? text.slice(Math.max(0, idx - CTX), idx) : '',

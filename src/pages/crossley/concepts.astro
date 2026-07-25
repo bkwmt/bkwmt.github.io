@@ -1,0 +1,118 @@
+---
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+import GithubSlugger from 'github-slugger';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { parseConcepts } from '../../lib/parse-concepts';
+
+const ch2 = (await getCollection('notes')).find((n) => n.id === '2015-snmw-ch2');
+if (!ch2) throw new Error('找不到 2015-snmw-ch2，請先跑 npm run sync');
+const concepts = parseConcepts(ch2.body ?? '');
+
+interface Meta { index: number; category: string; refs: { note: string; heading: string }[] }
+const meta = yaml.load(fs.readFileSync('src/data/concepts.yaml', 'utf8')) as {
+  categories: string[]; concepts: Meta[];
+};
+const metaByIndex = new Map(meta.concepts.map((m) => [m.index, m]));
+
+// anchor 驗證：refs 指到的標題必須存在於該導讀，否則 build log 警告
+const allNotes = await getCollection('notes');
+const slugger = new GithubSlugger();
+function refHref(ref: { note: string; heading: string }): string | null {
+  const target = allNotes.find((n) => n.id === ref.note);
+  if (!target || !(target.body ?? '').split('\n').some((l) => l.replace(/^#+\s*/, '').trim() === ref.heading)) {
+    console.warn(`[concepts.yaml] 待對位：${ref.note} 無標題「${ref.heading}」`);
+    return null;
+  }
+  slugger.reset();
+  return `/crossley/notes/${ref.note}/#${slugger.slug(ref.heading)}`;
+}
+const items = concepts.map((c) => {
+  const m = metaByIndex.get(c.index);
+  return {
+    ...c,
+    category: m?.category ?? '動態與其他',
+    refs: (m?.refs ?? []).map((r) => ({ ...r, href: refHref(r) })),
+  };
+});
+const ch2TocHref = '/crossley/notes/2015-snmw-ch2/';
+---
+<Base title="概念索引">
+  <h1>概念索引</h1>
+  <p class="muted">Ch2 導讀的 63 項技術概念清單，定義逐字取自導讀；分類僅供導航。</p>
+  <input id="concept-search" type="search" placeholder="搜尋概念（中文或原文）⋯" aria-label="搜尋概念" />
+  <div class="chips" role="group" aria-label="依分類篩選">
+    <button class="chip" data-cat="all" aria-pressed="true">全部</button>
+    {meta.categories.map((cat) => (
+      <button class="chip" data-cat={cat} aria-pressed="false">{cat}</button>
+    ))}
+  </div>
+  <ol class="concept-list">
+    {items.map((c) => (
+      <li
+        class="card concept"
+        data-cat={c.category}
+        data-search={`${c.term} ${c.original ?? ''}`.toLowerCase()}
+        value={c.index}
+      >
+        <details>
+          <summary>
+            <strong>{c.term}</strong>
+            {c.original && <span class="muted">（{c.original}）</span>}
+            <span class="chip" style="pointer-events:none; margin-left:0.5rem;">{c.category}</span>
+          </summary>
+          <p>{c.definition}</p>
+          <p class="muted" style="font-size:0.82rem;">
+            出處：<a href={ch2TocHref}>Ch2 導讀・全章技術概念清單</a> 第 {c.index} 項
+            {c.refs.map((r) =>
+              r.href
+                ? <>｜另見 <a href={r.href}>{r.note}</a></>
+                : <>｜來源段落待對位（{r.note}）</>
+            )}
+          </p>
+        </details>
+      </li>
+    ))}
+  </ol>
+  <p id="no-result" class="muted" hidden>沒有符合的概念。</p>
+</Base>
+
+<script>
+  const search = document.getElementById('concept-search') as HTMLInputElement;
+  const items = [...document.querySelectorAll<HTMLElement>('.concept')];
+  const noResult = document.getElementById('no-result')!;
+  let cat = 'all';
+
+  function apply() {
+    const q = search.value.trim().toLowerCase();
+    let visible = 0;
+    for (const el of items) {
+      const okCat = cat === 'all' || el.dataset.cat === cat;
+      const okQ = !q || el.dataset.search!.includes(q);
+      el.hidden = !(okCat && okQ);
+      if (!el.hidden) visible++;
+    }
+    noResult.hidden = visible > 0;
+  }
+  search.addEventListener('input', apply);
+  document.querySelectorAll<HTMLButtonElement>('.chip[data-cat]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-cat]').forEach((c) => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      cat = chip.dataset.cat!;
+      apply();
+    });
+  });
+</script>
+
+<style>
+  #concept-search {
+    width: 100%; padding: 0.6rem 0.9rem; font-size: 1rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg); color: var(--fg); font-family: var(--sans);
+  }
+  .concept-list { list-style: none; padding: 0; }
+  .concept summary { cursor: pointer; }
+  .concept p { margin: 0.5rem 0 0; }
+</style>

@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { parseQuotes } from '../../lib/parse-quotes';
+
+const notes = (await getCollection('notes')).sort((a, b) => a.data.order - b.data.order);
+const groups = notes
+  .map((n) => ({
+    id: n.id,
+    title: n.data.title,
+    source: n.data.source,
+    quotes: parseQuotes(n.body ?? ''),
+  }))
+  .filter((g) => g.quotes.length > 0);
+const missing = notes.filter((n) => parseQuotes(n.body ?? '').length === 0);
+---
+<Base title="關鍵句引文庫">
+  <h1>關鍵句引文庫</h1>
+  <p class="muted">
+    引文逐字取自各導讀的關鍵句區塊，附原書頁碼。
+    {missing.length > 0 && `（${missing.map((n) => n.data.title).join('、')} 無關鍵句區塊，未收錄。）`}
+  </p>
+  <div class="chips" role="group" aria-label="依文本篩選">
+    <button class="chip" data-filter="all" aria-pressed="true">全部</button>
+    {groups.map((g) => (
+      <button class="chip" data-filter={g.id} aria-pressed="false">{g.title}</button>
+    ))}
+  </div>
+  {groups.map((g) => (
+    <section data-group={g.id}>
+      <h2>{g.title}</h2>
+      {g.quotes.map((q) => (
+        <figure class="quote-card" data-group={g.id}>
+          <blockquote>{q.text}</blockquote>
+          <figcaption class="muted">
+            {q.page}｜{q.section}{q.note && `｜${q.note}`}
+          </figcaption>
+          <button
+            class="copy-btn"
+            data-copy={`「${q.text}」（${g.source}, ${q.page}）`}
+          >複製引文</button>
+        </figure>
+      ))}
+    </section>
+  ))}
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-filter]').forEach((c) => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      const f = chip.dataset.filter!;
+      document.querySelectorAll<HTMLElement>('section[data-group]').forEach((s) => {
+        s.hidden = f !== 'all' && s.dataset.group !== f;
+      });
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(btn.dataset.copy!);
+      const old = btn.textContent;
+      btn.textContent = '已複製';
+      setTimeout(() => (btn.textContent = old), 1200);
+    });
+  });
+</script>

@@ -91,3 +91,18 @@ mark[data-annotation] { background: var(--highlight); color: inherit; }
     color: var(--fg); padding: 0.5rem 1rem; font-family: var(--sans); cursor: pointer;
   }
 }
+
+/* 引文卡片 */
+.chips { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0 1.5rem; }
+.quote-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  margin: 0 0 1rem; padding: 1rem 1.25rem;
+}
+.quote-card blockquote { margin: 0 0 0.5rem; font-family: var(--serif); }
+.quote-card figcaption { font-size: 0.82rem; }
+.copy-btn {
+  margin-top: 0.5rem; border: 1px solid var(--border); border-radius: 6px;
+  background: none; color: var(--muted); font-size: 0.8rem;
+  padding: 0.2rem 0.7rem; cursor: pointer; font-family: var(--sans);
+}
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }

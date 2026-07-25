@@ -167,5 +167,89 @@
   });
 
   replayHighlights();
+
+  // ---------- 我的註記：管理面板＋匯出 ----------
+  const mgrBtn = document.createElement('button');
+  mgrBtn.id = 'ann-mgr-btn';
+  document.body.appendChild(mgrBtn);
+
+  const mgr = document.createElement('div');
+  mgr.id = 'ann-mgr';
+  mgr.hidden = true;
+  document.body.appendChild(mgr);
+
+  const fmtTime = (iso) => {
+    const d = new Date(iso);
+    const p = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  };
+
+  function toMarkdown(list) {
+    const lines = ['# 網站註記匯出', ''];
+    list.forEach((a, i) => {
+      lines.push(
+        `## 註記 ${i + 1}（${a.type}）`,
+        `- 頁面：${a.page}`,
+        `- 小節：${a.section || '（未定位）'}`,
+        `- 選取原文：「${a.exact}」`,
+        `- 註記：${a.comment}`,
+        `- 時間：${fmtTime(a.created)}`,
+        '',
+      );
+    });
+    return lines.join('\n');
+  }
+
+  function renderMgr() {
+    const list = load();
+    mgrBtn.textContent = `我的註記（${list.length}）`;
+    const items = list.map((a, i) => `
+      <li class="ann-item" data-id="${a.id}">
+        <span class="ann-meta">${a.type}｜${a.pageTitle}｜${fmtTime(a.created)}</span>
+        <blockquote>${a.exact.length > 80 ? a.exact.slice(0, 80) + '⋯' : a.exact}</blockquote>
+        <p>${a.comment}</p>
+        <button class="ann-del" data-id="${a.id}">刪除</button>
+      </li>`).join('');
+    mgr.innerHTML = `
+      <header>
+        <strong>我的註記（${list.length} 則）</strong>
+        <button id="ann-mgr-close" aria-label="關閉">×</button>
+      </header>
+      <p class="ann-hint">註記存在此瀏覽器的 localStorage，清除瀏覽資料前請先匯出。</p>
+      <div class="ann-actions">
+        <button id="ann-export" ${list.length ? '' : 'disabled'}>匯出 .md</button>
+        <button id="ann-copy" ${list.length ? '' : 'disabled'}>複製全部</button>
+      </div>
+      <ul>${items || '<li class="ann-meta">尚無註記。到導讀頁選取文字即可記註。</li>'}</ul>`;
+    mgr.querySelector('#ann-mgr-close').addEventListener('click', () => { mgr.hidden = true; });
+    mgr.querySelector('#ann-export')?.addEventListener('click', () => {
+      const blob = new Blob([toMarkdown(load())], { type: 'text/markdown' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `annotations-${new Date().toISOString().slice(0, 10)}.md`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+    mgr.querySelector('#ann-copy')?.addEventListener('click', async (e) => {
+      await navigator.clipboard.writeText(toMarkdown(load()));
+      e.target.textContent = '已複製';
+      setTimeout(() => (e.target.textContent = '複製全部'), 1200);
+    });
+    mgr.querySelectorAll('.ann-del').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        save(load().filter((a) => a.id !== btn.dataset.id));
+        renderMgr();
+        replayHighlights();
+      });
+    });
+  }
+
+  mgrBtn.addEventListener('click', () => {
+    mgr.hidden = !mgr.hidden;
+    if (!mgr.hidden) renderMgr();
+  });
+  window.addEventListener('annotations-changed', renderMgr);
+  renderMgr();
+
   window.__annStore = { KEY, load, save }; // Task 10 的管理面板共用
 })();

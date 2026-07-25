@@ -137,3 +137,33 @@ mark[data-annotation] { background: var(--highlight); color: inherit; }
   color: var(--fg); padding: 0.3rem 0.9rem; cursor: pointer; font-family: var(--sans);
 }
 #ann-panel #ann-save { border-color: var(--accent); color: var(--accent); }
+
+/* 註記管理面板 */
+#ann-mgr-btn {
+  position: fixed; left: 1rem; bottom: 1rem; z-index: 50;
+  border: 1px solid var(--border); border-radius: 999px;
+  background: var(--bg); color: var(--muted);
+  padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer; font-family: var(--sans);
+}
+#ann-mgr {
+  position: fixed; z-index: 70; left: 1rem; bottom: 4rem;
+  width: min(92vw, 24rem); max-height: 65vh; overflow-y: auto;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1rem; box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+#ann-mgr header { display: flex; justify-content: space-between; align-items: center; }
+#ann-mgr ul { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+#ann-mgr .ann-item { border-top: 1px solid var(--border); padding: 0.6rem 0; }
+#ann-mgr .ann-meta { color: var(--muted); font-size: 0.78rem; }
+#ann-mgr .ann-hint { color: var(--muted); font-size: 0.78rem; margin: 0.3rem 0; }
+#ann-mgr blockquote {
+  margin: 0.3rem 0; padding: 0.1rem 0.6rem;
+  border-left: 2px solid var(--border); color: var(--muted); font-size: 0.82rem;
+}
+#ann-mgr p { margin: 0.2rem 0; font-size: 0.9rem; }
+#ann-mgr button { font-family: var(--sans); cursor: pointer; }
+#ann-mgr .ann-del {
+  border: none; background: none; color: var(--muted); font-size: 0.78rem;
+  text-decoration: underline; padding: 0;
+}
+#ann-mgr-close { border: none; background: none; color: var(--fg); font-size: 1.1rem; }

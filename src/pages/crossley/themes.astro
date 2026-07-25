@@ -1,0 +1,81 @@
+---
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { resolveAnchor } from '../../lib/heading-anchors';
+
+interface Entry { note: string; heading: string; pages: string; excerpt: string }
+interface Theme { id: string; title: string; entries: Entry[] }
+const themes = yaml.load(fs.readFileSync('src/data/themes.yaml', 'utf8')) as Theme[];
+
+const notes = await getCollection('notes');
+const titleOf = new Map(notes.map((n) => [n.id, n.data.title]));
+function hrefOf(e: Entry): string | null {
+  const target = notes.find((n) => n.id === e.note);
+  const result = resolveAnchor(target?.body ?? '', e.heading);
+  if (result.slug === null) {
+    console.warn(
+      `[themes.yaml] 待對位（${result.reason === 'ambiguous' ? '標題重複' : '無此標題'}）：${e.note}「${e.heading}」`,
+    );
+    return null;
+  }
+  return `/crossley/notes/${e.note}/#${result.slug}`;
+}
+const enriched = themes.map((t) => ({
+  ...t,
+  entries: t.entries.map((e) => ({ ...e, href: hrefOf(e), noteTitle: titleOf.get(e.note) ?? e.note })),
+}));
+
+function renderExcerpt(s: string): string {
+  const esc = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return esc.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+---
+<Base title="主題對照" wide>
+  <h1>跨文本主題對照</h1>
+  <p class="muted">
+    同一主題在各文本的說法並排。摘錄逐字取自導讀（選取與並排是編輯行為，文字本身零改寫），附原書頁碼。
+  </p>
+  <div class="chips" role="tablist" aria-label="主題">
+    {enriched.map((t, i) => (
+      <button class="chip" role="tab" data-theme={t.id} aria-pressed={i === 0 ? 'true' : 'false'}>{t.title}</button>
+    ))}
+  </div>
+  {enriched.map((t, i) => (
+    <section class="theme-panel" data-theme={t.id} hidden={i !== 0}>
+      <div class="theme-columns">
+        {t.entries.map((e) => (
+          <article class="card">
+            <h3 style="margin-top:0;">{e.noteTitle}</h3>
+            <p class="muted" style="font-size:0.82rem;">{e.heading}｜{e.pages}</p>
+            <div class="theme-excerpt" set:html={renderExcerpt(e.excerpt)} />
+            {e.href
+              ? <a href={e.href} style="font-size:0.85rem;">回到導讀上下文 →</a>
+              : <span class="muted" style="font-size:0.85rem;">來源段落待對位</span>}
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.chip[data-theme]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-theme]').forEach((c) => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      document.querySelectorAll<HTMLElement>('.theme-panel').forEach((p) => {
+        p.hidden = p.dataset.theme !== chip.dataset.theme;
+      });
+    });
+  });
+</script>
+
+<style>
+  .theme-columns { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 60rem) {
+    .theme-columns { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+  }
+  .theme-excerpt { white-space: pre-line; font-size: 0.95rem; }
+</style>

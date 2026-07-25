@@ -1,0 +1,28 @@
+{
+  "name": "bkwmt-github-io",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "sync": "bash scripts/sync-notes.sh",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "github-slugger": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.0",
+    "@types/js-yaml": "^4.0.9",
+    "vitest": "^4.1.10"
+  }
+}

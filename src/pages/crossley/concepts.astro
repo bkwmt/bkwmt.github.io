@@ -1,10 +1,10 @@
 ---
 import fs from 'node:fs';
 import yaml from 'js-yaml';
-import GithubSlugger from 'github-slugger';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { parseConcepts } from '../../lib/parse-concepts';
+import { resolveAnchor } from '../../lib/heading-anchors';
 
 const ch2 = (await getCollection('notes')).find((n) => n.id === '2015-snmw-ch2');
 if (!ch2) throw new Error('找不到 2015-snmw-ch2，請先跑 npm run sync');
@@ -16,17 +16,18 @@ const meta = yaml.load(fs.readFileSync('src/data/concepts.yaml', 'utf8')) as {
 };
 const metaByIndex = new Map(meta.concepts.map((m) => [m.index, m]));
 
-// anchor 驗證：refs 指到的標題必須存在於該導讀，否則 build log 警告
+// anchor 驗證：refs 指到的標題必須存在於該導讀、且不得有文字重複的歧義，否則 build log 警告
 const allNotes = await getCollection('notes');
-const slugger = new GithubSlugger();
 function refHref(ref: { note: string; heading: string }): string | null {
   const target = allNotes.find((n) => n.id === ref.note);
-  if (!target || !(target.body ?? '').split('\n').some((l) => l.replace(/^#+\s*/, '').trim() === ref.heading)) {
-    console.warn(`[concepts.yaml] 待對位：${ref.note} 無標題「${ref.heading}」`);
+  const result = resolveAnchor(target?.body ?? '', ref.heading);
+  if (result.slug === null) {
+    console.warn(
+      `[concepts.yaml] 待對位（${result.reason === 'ambiguous' ? '標題重複' : '無此標題'}）：${ref.note}「${ref.heading}」`,
+    );
     return null;
   }
-  slugger.reset();
-  return `/crossley/notes/${ref.note}/#${slugger.slug(ref.heading)}`;
+  return `/crossley/notes/${ref.note}/#${result.slug}`;
 }
 const items = concepts.map((c) => {
   const m = metaByIndex.get(c.index);

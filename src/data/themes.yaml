@@ -1,0 +1,60 @@
+# 跨文本主題對照（人工編纂，可審）。
+# 摘錄逐字取自 src/content/notes/*.md 各節導讀文字（whole paragraphs，零改寫）；
+# 選取哪些段落並排、以哪個 heading 定錨是編輯行為，excerpt 本身文字不新增不刪改。
+# heading 必須逐字對應來源檔案中的一個 heading 行（去除開頭 # 與空白後）；pages 為原書頁碼。
+#
+# 原規劃另有 bourdieu（對 Bourdieu 的態度）主題：2008 篇「1. 導論（pp. 89–91）」通篇
+# 無 Bourdieu 相關文字（已 grep 確認零命中），故其 2008 entry 依規則省略；Ch2 未規劃對應
+# entry；僅剩 Ch1 一則 entry，未達「每主題至少 2 entries」門檻，故整個主題刪除，不收錄。
+
+- id: punk-network
+  title: punk 網絡案例
+  entries:
+    - note: 2008-pretty-connected
+      heading: "5. 早期英國 punk：把點連起來（pp. 96–100）——網絡的質性描述"
+      pages: "pp. 96–100"
+      excerpt: |
+        核心主張：四個以上的先鋒樂團「作為 punk 樂團」幾乎同時出現，這不是巧合，因為它們全部從**同一個既存的、多層的網絡**中長出來。「這個網絡，我相信比被鑲嵌在其中的樂團與行動者更是 punk 故事的重點」（p. 96）。
+
+        7. **Bromley Contingent**：從早期演出被吸進來的一群 Pistols 樂迷，成員包括 Siouxsie、Steve Severin（後來的 Banshees）、Billy Idol（後來的 Chelsea/Generation X）。他們是第一批可辨識的 punk 觀眾，是其他觀眾的角色典範，也是媒體記錄 punk「擴散」的展示品。Simon Barker 回憶第一次（不知情地）看到 Pistols 開場：「Malcolm 進來時我想『哇，他怎麼在這』……然後 Sex Pistols 上台，全場只有我在鼓掌」。Contingent 成員 Berlin 在自宅為樂團辦的派對把雙方關係「封印」起來。技術意義上，Bromley Contingent 與 Pistols 形成一個 **clique**（派系；網絡中兩兩互連的子群體），有自己的 focus：Louise's，一間女同志酒吧，「punk 先鋒的神經中樞」（p. 100）。
+    - note: 2015-snmw-ch2
+      heading: "（三）Levels of analysis（pp. 20–26）"
+      pages: "pp. 20–26"
+      excerpt: |
+        3. **路徑與路徑長度（paths and path lengths）**：連接兩節點的連結鏈，長度以連帶數（degrees）計。**Punk 案例**：Don Letts 與 McLaren 無直接連帶，但 Letts–Czezowski–McLaren 是兩度路徑；Letts 距 Rotten 三度。妙喻（p. 21）：「Letts 當時可能根本不知道 Rotten 存在，但如果 Rotten 得了流感，Letts 就有被傳染的危險……更切題的是，如果 Rotten 領軍了一支很棒的樂團或寫出一首好歌，Letts 很可能會聽說。」路徑＝擴散管道的教學經典。
+
+        - **核心—邊陲結構（core–periphery structure）**：核心內部稠密，邊陲內部與核心—邊陲之間稀疏，但邊陲連核心勝於彼此相連。**核心—邊陲分析**找出最貼近此描述的二分（UCINET 有演算法），產出**密度矩陣**（density matrix）。**Punk 案例（Table 2.2）**：Figure 2.2 網絡最佳分割為 18 人核心（核心內密度 0.89）、57 人邊陲（邊陲內 0.06、核心—邊陲間 0.09），「一個清楚的核心—邊陲結構」。
+
+- id: music-worlds-vs-subculture
+  title: music worlds 對次文化概念
+  entries:
+    - note: 2008-pretty-connected
+      heading: "3. 英國 punk 是什麼？（pp. 92–94）"
+      pages: "pp. 92–94"
+      excerpt: |
+        先處理定義問題。用風格慣例定義 punk 很麻煩（風格有變異、多數元素是借來的），所以他的答案很乾脆：「早期英國 punk 就是 1976 年倫敦一小群自我標籤的樂團與觀眾在做的事」（p. 92）。這是一個**外延式**（用具體人事物指認）而非內涵式（用特徵定義）的界定，跟他整個網絡取徑一致。
+
+        接著描述慣例（conventions）：音樂上短、快、直接，敵視 prog rock 的冗長與炫技；服裝上撕裂、別針、戀物元素、挑釁符號、DIY 精神；行為上對抗與爭議（樂團向觀眾挑釁、觀眾吐口水回敬），連上 Williams（1977）的「感覺結構」（structure of feeling）：疏離、無聊、對停滯世界的不滿。但他強調，**最重要的是把這些慣例串起來、賦予意義、提供社會身分的那個「敘事」**。punk 同時包含慣例、以及對慣例的集體定義與詮釋。
+    - note: 2015-snmw-ch1
+      heading: "一、開場：從次文化的破產到 music worlds 的選擇（pp. 1–2，無小標題）"
+      pages: "pp. 1–2"
+      excerpt: |
+        音樂的製作與享受是社會活動，且會沿著風格與地理的線索聚集成群。早期社會學用「次文化」（sub-culture）解釋這種聚集，但這個概念有根本缺陷；學界因此發展出三個替代概念：scenes、fields、music worlds。三位作者明確選擇 music worlds，並宣告本書的目的是擴展 music worlds 的研究議程，而其中他們特別要處理的，是音樂世界的「網絡性格」（networked character）。
+
+- id: social-capital
+  title: 社會資本
+  entries:
+    - note: 2008-pretty-connected
+      heading: "8. 權力與衝突（pp. 107–110）"
+      pages: "pp. 107–110"
+      excerpt: |
+        網絡不只促進合作，也生成權力不均與衝突。「網絡是不規則的結構，即使帶來普遍優勢，也把成員放在不同位置、給予不同程度的好處，製造怨懟與衝突的可能」（p. 107）。
+
+        2. **網絡位置＝中心性（centrality）**（Bonacich 1987）。他白話介紹了三種測量：**degree centrality**（你連了幾個人）、**closeness**（你沿最短路徑到所有其他人有多近）、**betweenness**（你落在多少對他人的最短路徑上）；另外用 Burt（1992, 2005）的**結構洞**（structural holes）概念與 Pajek 的 **aggregate constraint** 指標：連接原本不相連的他人（橋接結構洞）的人可以當掮客（broker），控制資源流動與互動條件。
+    - note: 2015-snmw-ch1
+      heading: "四、Social capital（pp. 5–6）"
+      pages: "pp. 5–6"
+      excerpt: |
+        音樂世界不是「碰巧」有網絡；連結是世界得以存在的**必要條件**。連結促成溝通與協調，並產生突現性質（emergent properties）。「社會資本」概念（雖有諸多缺陷，引 Fine 2001 的批判）足以概括這一點，作者採兩種理解：Lin 的個人層次與 Coleman 的結構層次。稠密封閉的網絡既能孕育偏差生活風格與創新，也能在流行退潮時**保存**音樂傳統。
+
+        2. **Nan Lin（2002）的個人層次**：透過與「直接擁有資源者」的連結**間接取得**參與所需的資源。例子：認識電台歌單委員會的委員；**跟錄音室工程師交朋友，可能是取得免費錄音時間的途徑**（與錄音室幕後研究直接相關的例子）。

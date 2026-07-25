@@ -12,7 +12,9 @@ function rewriteNoteLinks() {
   return (tree) => {
     visit(tree, 'link', (node) => {
       const [file, hash] = node.url.split('#');
-      const route = NOTE_ROUTES[decodeURIComponent(file)];
+      let decoded = file;
+      try { decoded = decodeURIComponent(file); } catch { /* 非法 % 序列，保留原字串 */ }
+      const route = NOTE_ROUTES[decoded];
       if (route) node.url = hash ? `${route}#${hash}` : route;
     });
   };

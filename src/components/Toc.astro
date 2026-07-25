@@ -1,0 +1,45 @@
+---
+interface Props { headings: { depth: number; slug: string; text: string }[]; }
+const { headings } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+<button id="toc-toggle" aria-expanded="false" aria-controls="toc">目次</button>
+<nav id="toc" aria-label="目次">
+  <ul>
+    {items.map((h) => (
+      <li class={`toc-d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>
+    ))}
+  </ul>
+</nav>
+<script>
+  const toc = document.getElementById('toc')!;
+  const toggle = document.getElementById('toc-toggle')!;
+  toggle.addEventListener('click', () => {
+    const open = toc.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  toc.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).tagName === 'A') {
+      toc.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  const links = new Map(
+    [...toc.querySelectorAll('a')].map((a) => [decodeURIComponent(a.hash.slice(1)), a]),
+  );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          links.forEach((a) => a.classList.remove('active'));
+          links.get(entry.target.id)?.classList.add('active');
+        }
+      }
+    },
+    { rootMargin: '0px 0px -75% 0px' },
+  );
+  links.forEach((_, id) => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+</script>

@@ -56,3 +56,38 @@ main { max-width: 38em; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
 }
 .chip[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .muted { color: var(--muted); }
+
+/* 導讀全文 */
+.note-source { margin-top: 0; font-size: 0.9rem; }
+.note-body blockquote {
+  border-left: 3px solid var(--border); margin: 1rem 0; padding: 0.1rem 1rem;
+  color: var(--muted);
+}
+.note-body table { border-collapse: collapse; display: block; overflow-x: auto; }
+.note-body th, .note-body td { border: 1px solid var(--border); padding: 0.35rem 0.6rem; }
+.note-body code { background: var(--highlight); padding: 0.1em 0.3em; border-radius: 3px; }
+mark[data-annotation] { background: var(--highlight); color: inherit; }
+
+/* 目次 */
+#toc {
+  position: fixed; right: max(1rem, calc(50% - 19em - 17rem)); top: 5rem;
+  width: 15rem; max-height: 70vh; overflow-y: auto;
+  font-size: 0.82rem; line-height: 1.6;
+}
+#toc ul { list-style: none; margin: 0; padding: 0; }
+#toc .toc-d3 { padding-left: 1rem; }
+#toc a { color: var(--muted); text-decoration: none; display: block; padding: 0.1rem 0; }
+#toc a.active, #toc a:hover { color: var(--accent); }
+#toc-toggle { display: none; }
+@media (max-width: 74rem) {
+  #toc {
+    display: none; right: 1rem; bottom: 4.5rem; top: auto;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem;
+  }
+  #toc.open { display: block; z-index: 50; }
+  #toc-toggle {
+    display: block; position: fixed; right: 1rem; bottom: 1rem; z-index: 50;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--bg);
+    color: var(--fg); padding: 0.5rem 1rem; font-family: var(--sans); cursor: pointer;
+  }
+}

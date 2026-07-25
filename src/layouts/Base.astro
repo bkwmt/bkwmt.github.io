@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
-interface Props { title: string; description?: string; }
-const { title, description = '文獻閱讀筆記' } = Astro.props;
+interface Props { title: string; description?: string; wide?: boolean; }
+const { title, description = '文獻閱讀筆記', wide = false } = Astro.props;
 const path = Astro.url.pathname;
 const nav = [
   { href: '/crossley/', label: 'Crossley 精讀' },
@@ -27,7 +27,7 @@ const nav = [
         ))}
       </nav>
     </header>
-    <main><slot /></main>
+    <main class={wide ? 'wide' : undefined}><slot /></main>
     <footer class="site-footer">
       閱讀筆記，內容均出自導讀文本；引文著作權屬原作者。
     </footer>

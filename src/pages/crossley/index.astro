@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+const notes = (await getCollection('notes')).sort((a, b) => a.data.order - b.data.order);
+const queue = [
+  {
+    title: '《SNMW》Ch11 "On jazz worlds"（McAndrew, Widdop & Stevenson）',
+    desc: '900 位英國爵士樂手的名鑑網絡，與 ghouse 方法最可比。前導可搭 Ch4（McAndrew & Everett 女性作曲家篇）。',
+  },
+  {
+    title: '《Networks of Sound, Style and Subversion》（2015 專書）',
+    desc: 'Pretty Connected 的完整擴充版（四城市 punk／post-punk）。',
+  },
+  {
+    title: '《SNMW》Ch3 "Totally wired"',
+    desc: '專書 post-punk 部分的濃縮，可當專書的預覽。',
+  },
+];
+---
+<Base title="Crossley 精讀">
+  <h1>第一輯：Nick Crossley 的音樂社會網絡研究</h1>
+  <p class="muted">閱讀目標：理解 Crossley 的音樂社會網絡研究（純理論吸收）。</p>
+
+  <h2>出版譜系</h2>
+  <p>
+    2008 期刊文（倫敦 punk）→ 2015 專書（四城市）→ 2015 論文集（方法標準化）。
+    論文集 Ch1／Ch2 是為書新寫，非舊文重刊。
+  </p>
+
+  <h2>已完成導讀</h2>
+  {notes.map((n) => (
+    <a class="card" href={`/crossley/notes/${n.id}/`} style="display:block; text-decoration:none; color:inherit;">
+      <h3 style="margin:0;">{n.data.title}</h3>
+      <p class="muted" style="margin:0.3rem 0 0; font-size:0.85rem;">{n.data.source}</p>
+    </a>
+  ))}
+
+  <h2>排隊中（下一輪）</h2>
+  {queue.map((q) => (
+    <div class="card" style="opacity:0.75;">
+      <h3 style="margin:0; font-size:1rem;">{q.title}</h3>
+      <p class="muted" style="margin:0.3rem 0 0; font-size:0.85rem;">{q.desc}</p>
+    </div>
+  ))}
+
+  <h2>交叉工具</h2>
+  <p>
+    <a href="/crossley/concepts/">概念索引</a>｜
+    <a href="/crossley/themes/">主題對照</a>｜
+    <a href="/crossley/quotes/">引文庫</a>
+  </p>
+</Base>

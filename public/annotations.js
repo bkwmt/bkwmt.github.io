@@ -50,6 +50,7 @@
 
   function replayHighlights() {
     if (!article || !('highlights' in CSS)) return;
+    CSS.highlights.delete('annotations');
     const slug = article.dataset.note;
     const anns = load().filter((a) => a.page === slug);
     if (!anns.length) return;
@@ -66,13 +67,6 @@
   document.body.appendChild(fab);
 
   let pending = null; // { exact, prefix, suffix, section }
-
-  function offsetOf(node, nodeOffset, spans) {
-    for (const sp of spans) {
-      if (sp.node === node) return sp.start + nodeOffset;
-    }
-    return -1;
-  }
 
   function sectionOf(node) {
     let el = node.nodeType === 1 ? node : node.parentElement;
@@ -94,12 +88,13 @@
     if (!article.contains(range.commonAncestorContainer)) { fab.hidden = true; return; }
     const exact = sel.toString();
     if (!exact.trim()) { fab.hidden = true; return; }
-    const { text, spans } = fullText(article);
-    let idx = range.startContainer.nodeType === Node.TEXT_NODE
-      ? offsetOf(range.startContainer, range.startOffset, spans)
-      : -1;
-    // 跨元素選取時 sel.toString() 與串接文字可能有細微差異；驗證失敗就退回舊行為
-    if (idx === -1 || text.slice(idx, idx + exact.length) !== exact) {
+    const { text } = fullText(article);
+    const preRange = document.createRange();
+    preRange.setStart(article, 0);
+    preRange.setEnd(range.startContainer, range.startOffset);
+    let idx = preRange.toString().length;
+    // Range.toString() 串接的是文字節點資料，與 fullText 的串接一致；仍驗證以防萬一
+    if (text.slice(idx, idx + exact.length) !== exact) {
       idx = text.indexOf(exact);
     }
     pending = {
@@ -184,6 +179,8 @@
     return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
   };
 
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
   function toMarkdown(list) {
     const lines = ['# 網站註記匯出', ''];
     list.forEach((a, i) => {
@@ -192,7 +189,7 @@
         `- 頁面：${a.page}`,
         `- 小節：${a.section || '（未定位）'}`,
         `- 選取原文：「${a.exact}」`,
-        `- 註記：${a.comment}`,
+        `- 註記：${a.comment.replace(/\r?\n/g, '\n  ')}`,
         `- 時間：${fmtTime(a.created)}`,
         '',
       );
@@ -205,9 +202,9 @@
     mgrBtn.textContent = `我的註記（${list.length}）`;
     const items = list.map((a, i) => `
       <li class="ann-item" data-id="${a.id}">
-        <span class="ann-meta">${a.type}｜${a.pageTitle}｜${fmtTime(a.created)}</span>
-        <blockquote>${a.exact.length > 80 ? a.exact.slice(0, 80) + '⋯' : a.exact}</blockquote>
-        <p>${a.comment}</p>
+        <span class="ann-meta">${esc(a.type)}｜${esc(a.pageTitle)}｜${fmtTime(a.created)}</span>
+        <blockquote>${esc(a.exact.length > 80 ? a.exact.slice(0, 80) + '⋯' : a.exact)}</blockquote>
+        <p>${esc(a.comment)}</p>
         <button class="ann-del" data-id="${a.id}">刪除</button>
       </li>`).join('');
     mgr.innerHTML = `

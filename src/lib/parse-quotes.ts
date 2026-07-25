@@ -10,11 +10,17 @@ const HEADING_RE = /^(#{2,3})\s+(.+)$/;
 const BULLET_RE = /^[-*]\s+「(.+)」（(pp?\.\s*[\d–\-,\s]+)(?:；(.+?))?）\s*$/;
 // 格式 B：1. p. 16：「text」（備註）？ 或 1. p. 21：無引號描述
 const NUMBERED_RE = /^\d+\.\s+(pp?\.\s*[\d–\-,\s]+?)：(.+)$/;
+// fallback：抓不到頁碼、但仍是可辨識的引文項目 → page: ""
+// 格式 A'：- 「text」（備註）？（無頁碼）
+const FALLBACK_BULLET_RE = /^[-*]\s+「(.+)」(?:（(.+)）)?\s*$/;
+// 格式 B'：N. 「text」（備註）？（無頁碼）
+const FALLBACK_NUMBERED_RE = /^\d+\.\s+「(.+)」(?:（(.+)）)?\s*$/;
 
 function stripQuoteMarks(s: string): { text: string; note?: string } {
-  const m = s.match(/^「(.+)」(?:（(.+)）)?\s*$/);
-  if (m) return { text: m[1], note: m[2] || undefined };
-  return { text: s.trim() };
+  const trimmed = s.trim();
+  const m = trimmed.match(/^「(.+)」(?:（(.+)）)?\s*$/);
+  if (m) return { text: m[1].trim(), note: m[2]?.trim() || undefined };
+  return { text: trimmed };
 }
 
 export function parseQuotes(md: string): Quote[] {
@@ -43,13 +49,24 @@ export function parseQuotes(md: string): Quote[] {
 
     const a = line.match(BULLET_RE);
     if (a) {
-      quotes.push({ text: a[1], page: a[2].trim(), note: a[3] || undefined, section });
+      quotes.push({ text: a[1].trim(), page: a[2].trim(), note: a[3]?.trim() || undefined, section });
       continue;
     }
     const b = line.match(NUMBERED_RE);
     if (b) {
       const { text, note } = stripQuoteMarks(b[2]);
       quotes.push({ text, page: b[1].trim(), note, section });
+      continue;
+    }
+    // page 抓不到：fallback 為帶引號但無頁碼的項目，page: ""
+    const c = line.match(FALLBACK_BULLET_RE);
+    if (c) {
+      quotes.push({ text: c[1].trim(), page: '', note: c[2]?.trim() || undefined, section });
+      continue;
+    }
+    const d = line.match(FALLBACK_NUMBERED_RE);
+    if (d) {
+      quotes.push({ text: d[1].trim(), page: '', note: d[2]?.trim() || undefined, section });
     }
   }
   return quotes;

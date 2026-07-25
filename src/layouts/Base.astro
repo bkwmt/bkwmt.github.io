@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description?: string; }
+const { title, description = '文獻閱讀筆記' } = Astro.props;
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/crossley/', label: 'Crossley 精讀' },
+  { href: '/crossley/concepts/', label: '概念索引' },
+  { href: '/crossley/themes/', label: '主題對照' },
+  { href: '/crossley/quotes/', label: '引文庫' },
+];
+---
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}｜文獻筆記</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="/">文獻筆記</a>
+      <nav>
+        {nav.map((n) => (
+          <a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site-footer">
+      閱讀筆記，內容均出自導讀文本；引文著作權屬原作者。
+    </footer>
+  </body>
+</html>

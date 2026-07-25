@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync": "bash scripts/sync-notes.sh"
+    "sync": "bash scripts/sync-notes.sh",
+    "test": "vitest run"
   },
   "dependencies": {
     "astro": "^5.0.0",
@@ -19,6 +20,7 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9"
+    "@types/js-yaml": "^4.0.9",
+    "vitest": "^4.1.10"
   }
 }

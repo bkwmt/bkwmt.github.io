@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ming Cheng 程明 — Musicologist · Studio Guitarist</title>
-<meta name="description" content="Ming Cheng (程明), musicologist and studio guitarist. Studies the recording-studio backstage of postwar Taiwanese popular music. Academic publications.">
+<title>Ming Cheng 程明 — Musicologist · Session Guitarist</title>
+<meta name="description" content="Ming Cheng (程明), musicologist and session guitarist. Studies the recording-studio backstage of postwar Taiwanese popular music. Academic publications.">
 <style>
 :root {
   --paper: #FBF9F4; --ink: #232B24; --console: #2E5C4B;
@@ -23,75 +23,79 @@ body {
   background: var(--paper); color: var(--ink);
   font-family: Palatino, "Palatino Linotype", "Book Antiqua", "Noto Serif TC", "Times New Roman", serif;
   font-size: 1.02rem; line-height: 1.75;
-  max-width: 44rem; margin: 0 auto;
-  padding: clamp(1.5rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 2rem) 3rem;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem) 3rem;
 }
 ::selection { background: var(--amber); color: var(--paper); }
 a { color: var(--console); text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--console); outline-offset: 2px; }
 
-.top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
-h1 { font-weight: 400; line-height: 1.15; }
-h1 .zh-name { font-size: clamp(2.1rem, 6vw, 2.7rem); letter-spacing: .06em; }
-h1 .en-name {
-  display: inline-block; margin-left: .8em;
-  font-size: 1rem; letter-spacing: .22em; color: var(--muted); white-space: nowrap;
+.layout {
+  display: grid;
+  grid-template-columns: 15.5rem minmax(0, 44rem);
+  column-gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
 }
+aside { position: sticky; top: 2.5rem; }
+h1 { font-weight: 400; line-height: 1.15; }
+h1 .zh-name { display: block; font-size: 2.3rem; letter-spacing: .08em; }
+h1 .en-name {
+  display: block; margin-top: .45em;
+  font-size: .95rem; letter-spacing: .22em; color: var(--muted);
+}
+.rule { width: 64px; height: 3px; background: var(--amber); margin: 1.1rem 0; }
+.tagline { font-size: .98rem; letter-spacing: .03em; }
+.titles { color: var(--muted); font-size: .88rem; margin-top: .7rem; line-height: 1.6; }
+.links { margin-top: 1.3rem; font-size: .9rem; list-style: none; padding: 0; }
+.links li { margin-bottom: .3rem; }
 #lang-toggle {
-  font: inherit; font-size: .85rem; letter-spacing: .08em;
+  margin-top: 1.4rem;
+  font: inherit; font-size: .82rem; letter-spacing: .08em;
   color: var(--console); background: none;
   border: 1px solid var(--line); border-radius: 2px;
-  padding: .15rem 0; min-width: 3.4em; text-align: center; cursor: pointer;
+  padding: .18rem 0; min-width: 3.6em; text-align: center; cursor: pointer;
 }
 #lang-toggle:hover { border-color: var(--console); }
-.rule { width: 72px; height: 3px; background: var(--amber); margin: 1.1rem 0 1.2rem; }
-.tagline { font-size: 1.05rem; letter-spacing: .04em; }
-.titles { color: var(--muted); font-size: .92rem; margin-top: .5rem; line-height: 1.65; }
-.bio { margin-top: 1.2rem; }
-.links { margin-top: 1.2rem; font-size: .92rem; color: var(--muted); }
-.links a { white-space: nowrap; }
 
-section { margin-top: 2.6rem; }
+.bio { margin-bottom: 2.4rem; max-width: 40rem; }
+section { margin-bottom: 2.6rem; }
 h2 {
-  font-size: .82rem; font-weight: 600; letter-spacing: .16em;
+  font-size: .8rem; font-weight: 600; letter-spacing: .16em;
   color: var(--console); text-transform: uppercase;
   border-bottom: 1px solid var(--line); padding-bottom: .45rem; margin-bottom: 1rem;
 }
-.pub { display: grid; grid-template-columns: 4.4rem 1fr; gap: .9rem; margin-bottom: .85rem; }
+.pub { display: grid; grid-template-columns: 3.4rem 1fr; gap: .9rem; margin-bottom: .85rem; }
 .year { color: var(--console); font-variant-numeric: tabular-nums; font-size: .95rem; }
 .entry { overflow-wrap: anywhere; }
 .note { color: var(--amber); font-size: .88em; }
 
 footer {
-  margin-top: 3.2rem; padding-top: 1rem; border-top: 1px solid var(--line);
+  margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line);
   font-size: .85rem; color: var(--muted);
 }
-@media (max-width: 430px) {
-  .pub { grid-template-columns: 1fr; gap: 0; }
-  h1 .en-name { display: block; margin: .3em 0 0; }
+@media (max-width: 760px) {
+  .layout { display: block; }
+  aside { position: static; margin-bottom: 2.4rem; }
+  .links li { display: inline; margin-right: .9rem; }
 }
 </style>
 </head>
 <body>
-<header>
-  <div class="top">
-    <h1><span class="zh-name">程明</span><span class="en-name">CHENG, Ming</span></h1>
-    <button id="lang-toggle" aria-label="Switch language">中</button>
-  </div>
+<div class="layout">
+<aside>
+  <h1><span class="zh-name">程明</span><span class="en-name">CHENG, Ming</span></h1>
   <div class="rule" aria-hidden="true"></div>
-  <p class="tagline"><span class="zh">音樂學者・錄音室吉他手</span><span class="en">Musicologist · Studio Guitarist</span></p>
+  <p class="tagline"><span class="zh">音樂學者・錄音室吉他手</span><span class="en">Musicologist · Session Guitarist</span></p>
   <p class="titles"><span class="zh">中央研究院資訊科學研究所 音樂與文化科技實驗室 研究助理</span><span class="en">Research Assistant, Music and Culture Technology Lab, Institute of Information Science, Academia Sinica</span><br><span class="zh">國立臺灣大學音樂學博士（2026）</span><span class="en">Ph.D. in Musicology, National Taiwan University (2026)</span></p>
-  <p class="bio"><span class="zh">我研究戰後臺灣流行音樂的錄音室幕後。1997 年起以錄音室吉他手身分工作二十餘年，2026 年於國立臺灣大學取得音樂學博士，現於中央研究院資訊科學研究所音樂與文化科技實驗室，以社會網絡分析、大型語言模型與深度學習方法重讀這段音樂史。我的核心主張是：幕後才是音樂真正被創造的場域。</span><span class="en">I study the recording-studio backstage of postwar Taiwanese popular music. A freelance studio guitarist since 1997, I received my Ph.D. in musicology from National Taiwan University in 2026, and now work at the Music and Culture Technology Lab, Institute of Information Science, Academia Sinica, rereading this musical past with social network analysis, large language models, and deep learning. My central claim: the backstage is where music is actually made.</span></p>
-  <p class="links">
-    <a href="mailto:musik.hugowski@gmail.com">musik.hugowski@gmail.com</a> ·
-    <a href="https://orcid.org/0000-0002-1523-4198">ORCID</a> ·
-    <a href="https://github.com/bkwmt">GitHub</a> ·
-    <a href="CV_MingCheng_zh.pdf">CV（中）</a> ·
-    <a href="CV_MingCheng_en.pdf">CV (EN)</a>
-  </p>
-</header>
+  <ul class="links">
+    <li><a href="mailto:musik.hugowski@gmail.com">musik.hugowski@gmail.com</a></li>
+    <li><a href="https://orcid.org/0000-0002-1523-4198">ORCID</a> · <a href="https://github.com/bkwmt">GitHub</a></li>
+    <li><a href="CV_MingCheng_zh.pdf">CV（中）</a> · <a href="CV_MingCheng_en.pdf">CV (EN)</a></li>
+  </ul>
+  <button id="lang-toggle" aria-label="Switch language">中</button>
+</aside>
 <main>
+  <p class="bio"><span class="zh">我研究戰後臺灣流行音樂的錄音室幕後。1997 年起以錄音室吉他手身分工作二十餘年，2026 年於國立臺灣大學取得音樂學博士，現於中央研究院資訊科學研究所音樂與文化科技實驗室，以社會網絡分析、大型語言模型與深度學習方法重讀這段音樂史。我的核心主張是：幕後才是音樂真正被創造的場域。</span><span class="en">I study the recording-studio backstage of postwar Taiwanese popular music. A freelance session guitarist since 1997, I received my Ph.D. in musicology from National Taiwan University in 2026, and now work at the Music and Culture Technology Lab, Institute of Information Science, Academia Sinica, rereading this musical past with social network analysis, large language models, and deep learning. My central claim: the backstage is where music is actually made.</span></p>
 <section><h2><span class="zh">期刊論文</span><span class="en">Journal Articles</span></h2>
 <div class="pub"><span class="year">2021</span><span class="entry">程明，〈聲響技術的跨域交纏：臺灣國語流行音樂錄音室研究初探〉，《民俗曲藝》第 213 期，頁 49–95，2021 年。</span></div>
 </section>
@@ -121,16 +125,11 @@ footer {
 <section><h2><span class="zh">其他著作</span><span class="en">Other Publications</span></h2>
 <div class="pub"><span class="year">2004</span><span class="entry">程明（合著），《世界重要國家有線電視數位化策略之比較分析暨我國有線電視全面數位化可行策略研析》，行政院新聞局有線廣播電視事業發展基金委託專題研究報告（未出版），2004 年。</span></div>
 </section>
-<section><h2><span class="zh">學歷</span><span class="en">Education</span></h2>
-<div class="pub"><span class="year">2015–2026</span><span class="entry"><span class="zh">國立臺灣大學音樂學研究所 博士（2021 年取得博士候選人資格；2026 年 7 月取得學位）</span><span class="en">Ph.D., Graduate Institute of Musicology, National Taiwan University (candidacy 2021; degree conferred July 2026)</span></span></div>
-<div class="pub"><span class="year">2012–2015</span><span class="entry"><span class="zh">國立臺灣大學音樂學研究所碩士班（轉博士班）</span><span class="en">Master’s program, Graduate Institute of Musicology, National Taiwan University (transferred to Ph.D. program)</span></span></div>
-<div class="pub"><span class="year">2004–2010</span><span class="entry"><span class="zh">東吳大學德國文化學系碩士班哲學組（主修德國哲學、副修德國文學）</span><span class="en">M.A. in Philosophy, Department of German Culture, Soochow University (major in German philosophy; minor in German literature)</span></span></div>
-<div class="pub"><span class="year">1999–2004</span><span class="entry"><span class="zh">中國文化大學德國語文學系／中國文學系文藝創作組（雙主修）</span><span class="en">B.A. (double major), Department of German Language and Literature / Division of Creative Writing, Department of Chinese Literature, Chinese Culture University</span></span></div>
-</section>
-</main>
 <footer>
   <span class="zh">更新：2026 年 7 月</span><span class="en">Last updated: July 2026</span>
 </footer>
+</main>
+</div>
 <script>
 const btn = document.getElementById('lang-toggle');
 function setLang(l) {

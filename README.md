@@ -2,6 +2,8 @@
 
 文獻精讀筆記的發布站。第一輯：Nick Crossley 的音樂社會網絡研究。
 
+**站點根（/）是程明的個人學術頁**（2026-07-28 起）：源在 `about_me/`，由其 `build_site.py --deploy` 複製到本 repo `public/`，與筆記站管線無關（見 WORKLOG）。筆記站入口為 [/crossley/](https://bkwmt.github.io/crossley/)。
+
 ## 資料源
 
 `~/Developer/research_library/Nick Crossley/notes/*.md` 是唯一權威資料源。

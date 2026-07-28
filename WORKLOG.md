@@ -2,11 +2,13 @@
 
 專案定位：把 `research_library/Nick Crossley/notes/` 的精讀導讀發布成公開網站，站上一切內容逐字取自導讀（最高原則），供使用者在外閱讀、交叉比對與註記。架構與流程詳見 [README.md](README.md)、設計文件 [docs/superpowers/specs/](docs/superpowers/specs/2026-07-25-reading-notes-site-design.md)。
 
-## 2026-07-28 新增 /cv/ 個人學術頁（外部來源，非筆記站內容）
+## 2026-07-28 個人學術頁上線，同日升為站點首頁
 
-**成果**：https://bkwmt.github.io/cv/ — 程明的簡式學術個人頁（著作目錄＋學歷，中英切換，亮暗色跟隨系統）。
+**成果**：https://bkwmt.github.io/ （站點根）＝程明的簡式學術個人頁（著作目錄＋學歷，預設英文、中英切換，亮暗跟隨系統）。初版部署在 /cv/，數小時後依使用者指示改為首頁並移除 /cv/。
 
-**權責**：此頁**不屬於筆記站管線**。唯一資料源是 `about_me/data/cv.yaml`，由 `about_me/site/build_site.py --deploy` 產出並複製到本 repo `public/cv/`（index.html＋中英 CV PDF）；Astro 對 `public/` 原樣發布，`npm run sync` 與筆記站流程完全不碰它。要更新此頁：改 cv.yaml → 在 about_me 跑 build → 回本 repo commit＋push。
+**變動**：刪除 `src/pages/index.astro`（原薄目錄首頁；筆記站入口本來就在 `/crossley/`，功能無損）；`Base.astro` 站名「文獻筆記」連結由 `/` 改 `/crossley/`；個人頁暫不連回筆記站（使用者指示）。
+
+**權責**：此頁**不屬於筆記站管線**。唯一資料源是 `about_me/data/cv.yaml`，由 `about_me/site/build_site.py --deploy` 產出並複製到本 repo `public/`（index.html＋中英 CV PDF）；Astro 對 `public/` 原樣發布，`npm run sync` 與筆記站流程完全不碰它。要更新此頁：改 cv.yaml → 在 about_me 跑 build → 回本 repo commit＋push。
 
 ## 2026-07-25 第一版上線
 

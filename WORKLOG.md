@@ -2,6 +2,12 @@
 
 專案定位：把 `research_library/Nick Crossley/notes/` 的精讀導讀發布成公開網站，站上一切內容逐字取自導讀（最高原則），供使用者在外閱讀、交叉比對與註記。架構與流程詳見 [README.md](README.md)、設計文件 [docs/superpowers/specs/](docs/superpowers/specs/2026-07-25-reading-notes-site-design.md)。
 
+## 2026-07-28 新增 /cv/ 個人學術頁（外部來源，非筆記站內容）
+
+**成果**：https://bkwmt.github.io/cv/ — 程明的簡式學術個人頁（著作目錄＋學歷，中英切換，亮暗色跟隨系統）。
+
+**權責**：此頁**不屬於筆記站管線**。唯一資料源是 `about_me/data/cv.yaml`，由 `about_me/site/build_site.py --deploy` 產出並複製到本 repo `public/cv/`（index.html＋中英 CV PDF）；Astro 對 `public/` 原樣發布，`npm run sync` 與筆記站流程完全不碰它。要更新此頁：改 cv.yaml → 在 about_me 跑 build → 回本 repo commit＋push。
+
 ## 2026-07-25 第一版上線
 
 **成果**：https://bkwmt.github.io 上線。首頁＋Crossley 第一輯（三份導讀全文、63 項概念索引、3 主題跨文本對照、14 則引文庫、localStorage 註記與 Markdown 匯出）。單元測試 40/40、Playwright 煙霧測試 3/3。

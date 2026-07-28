@@ -30,6 +30,12 @@ a { color: var(--console); text-decoration: underline; text-underline-offset: .2
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--console); outline-offset: 2px; }
 
+.header-top { display: flex; align-items: center; gap: clamp(.9rem, 2.5vw, 1.4rem); }
+.avatar {
+  flex: 0 0 auto; height: clamp(72px, 11vw, 96px); width: auto;
+  border-radius: 2px;
+}
+.header-text { flex: 1; min-width: 0; }
 .masthead {
   display: flex; justify-content: space-between; align-items: baseline;
   flex-wrap: wrap; gap: .4rem 1.5rem;
@@ -52,18 +58,7 @@ h1 .en-name {
 }
 #lang-toggle:hover { border-color: var(--console); }
 
-.intro {
-  display: flex; align-items: flex-start;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  margin: 2.2rem 0 2.6rem;
-}
-.bio { flex: 1; margin: 0; }
-.portrait { flex: 0 0 clamp(220px, 26vw, 340px); margin: 0; }
-.portrait img { width: 100%; height: auto; display: block; border-radius: 2px; }
-@media (max-width: 700px) {
-  .intro { flex-direction: column; }
-  .portrait { flex-basis: auto; width: 100%; max-width: 420px; }
-}
+.bio { margin: 2.2rem 0 2.6rem; }
 section { margin-bottom: 2.6rem; }
 h2 {
   font-size: .8rem; font-weight: 600; letter-spacing: .16em;
@@ -83,27 +78,27 @@ footer {
 </head>
 <body>
 <header>
-  <div class="masthead">
-    <h1><span class="zh-name">程明</span><span class="en-name">CHENG, Ming</span></h1>
-    <p class="links">
-      <a href="mailto:musik.hugowski@gmail.com">Email</a> ·
-      <a href="https://orcid.org/0000-0002-1523-4198">ORCID</a> ·
-      <a href="https://github.com/bkwmt">GitHub</a> ·
-      <a href="CV_MingCheng_zh.pdf">CV（中）</a> ·
-      <a href="CV_MingCheng_en.pdf">CV (EN)</a>
-      <button id="lang-toggle" aria-label="Switch language">中</button>
-    </p>
+  <div class="header-top">
+    <img class="avatar" src="avatar.jpg" alt="Ming Cheng（程明）">
+    <div class="header-text">
+      <div class="masthead">
+        <h1><span class="zh-name">程明</span><span class="en-name">CHENG, Ming</span></h1>
+        <p class="links">
+          <a href="mailto:musik.hugowski@gmail.com">Email</a> ·
+          <a href="https://orcid.org/0000-0002-1523-4198">ORCID</a> ·
+          <a href="https://github.com/bkwmt">GitHub</a> ·
+          <a href="CV_MingCheng_zh.pdf">CV（中）</a> ·
+          <a href="CV_MingCheng_en.pdf">CV (EN)</a>
+          <button id="lang-toggle" aria-label="Switch language">中</button>
+        </p>
+      </div>
+      <p class="subline"><span class="zh">音樂學者・錄音室吉他手</span><span class="en">Musicologist · Session Guitarist</span>｜<span class="zh">中央研究院資訊科學研究所 音樂與文化科技實驗室 博士後研究學者</span><span class="en">Postdoctoral Fellow, Music and Culture Technology Lab, Institute of Information Science, Academia Sinica</span></p>
+    </div>
   </div>
-  <p class="subline"><span class="zh">音樂學者・錄音室吉他手</span><span class="en">Musicologist · Session Guitarist</span>｜<span class="zh">中央研究院資訊科學研究所 音樂與文化科技實驗室 博士後研究學者</span><span class="en">Postdoctoral Fellow, Music and Culture Technology Lab, Institute of Information Science, Academia Sinica</span></p>
   <div class="banner-rule" aria-hidden="true"></div>
 </header>
 <main>
-  <div class="intro">
-    <figure class="portrait">
-      <img src="MCheng.jpg" alt="Ming Cheng performing live（程明現場演出）" loading="lazy">
-    </figure>
-    <p class="bio"><span class="zh">程明，音樂學者、錄音室吉他手。1995 年起活躍於臺灣音樂產業，2026 年取得國立臺灣大學音樂學博士，現任中央研究院資訊科學研究所音樂與文化科技實驗室博士後研究學者，以社會網絡分析、大型語言模型與深度學習方法研究戰後臺灣流行音樂的錄音室幕後。</span><span class="en">Ming Cheng is a musicologist and session guitarist. Active in Taiwan’s music industry since 1995, he received his Ph.D. in musicology from National Taiwan University in 2026 and is now a Postdoctoral Fellow at the Music and Culture Technology Lab, Institute of Information Science, Academia Sinica, studying the recording-studio backstage of postwar Taiwanese popular music with social network analysis, large language models, and deep learning.</span></p>
-  </div>
+  <p class="bio"><span class="zh">程明，音樂學者、錄音室吉他手。1995 年起活躍於臺灣音樂產業，2026 年取得國立臺灣大學音樂學博士，現任中央研究院資訊科學研究所音樂與文化科技實驗室博士後研究學者，以社會網絡分析、大型語言模型與深度學習方法研究戰後臺灣流行音樂的錄音室幕後。</span><span class="en">Ming Cheng is a musicologist and session guitarist. Active in Taiwan’s music industry since 1995, he received his Ph.D. in musicology from National Taiwan University in 2026 and is now a Postdoctoral Fellow at the Music and Culture Technology Lab, Institute of Information Science, Academia Sinica, studying the recording-studio backstage of postwar Taiwanese popular music with social network analysis, large language models, and deep learning.</span></p>
 <section><h2><span class="zh">期刊論文</span><span class="en">Journal Articles</span></h2>
 <div class="pub"><span class="year">2021</span><span class="entry">程明，〈聲響技術的跨域交纏：臺灣國語流行音樂錄音室研究初探〉，《民俗曲藝》第 213 期，頁 49–95，2021 年。</span></div>
 </section>
